@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 Thuê Trọ HCMC - Rental Listing App
 
-## Getting Started
+Một ứng dụng web tinh gọn giúp người dùng tìm kiếm và quản lý phòng trọ tại TP. Hồ Chí Minh với giao diện hiện đại, tối ưu cho trải nghiệm di động.
 
-First, run the development server:
+## 🚀 Tính năng chính
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Cho người dùng (Phòng Trọ)
+- **Danh sách phòng**: Hiển thị dạng lưới đẹp mắt, đầy đủ thông tin giá, địa chỉ, hình ảnh.
+- **Tìm kiếm & Bộ lọc**:
+  - Tìm kiếm theo từ khóa (tiêu đề, địa chỉ).
+  - Lọc theo khoảng giá (Dưới 2tr, 2-4tr, 4-6tr, trên 6tr).
+  - Lọc theo Quận/Huyện tại TP.HCM.
+- **Trang chi tiết**: Xem đầy đủ hình ảnh (gallery), mô tả, bản đồ Google Maps và nút liên hệ nhanh qua Zalo.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Cho Quản trị viên (Admin Panel)
+- **Quản lý danh sách**: Xem, sửa và xóa các phòng trọ hiện có.
+- **Đăng bài mới**: 
+  - Giao diện kéo thả/chọn ảnh trực tiếp từ máy (Zalo tải về).
+  - Tự động tải ảnh lên Supabase Storage.
+  - Tọa độ bản đồ dễ dàng cấu hình.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Công nghệ sử dụng
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: Next.js 15+ (App Router), React, TailwindCSS.
+- **Backend/Database**: Supabase (PostgreSQL, Storage, SSR Auth).
+- **Styling**: Vanilla CSS + Tailwind cho hiệu ứng mượt mà (glassmorphism, animations).
 
-## Learn More
+## ⚙️ Cài đặt & Chạy ứng dụng
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone project:**
+   ```bash
+   git clone git@github.com:quzkhanh/rental_listing.git
+   cd rental-listing
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Cài đặt dependencies:**
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Cấu hình biến môi trường:**
+   Tạo file `.env.local` và thêm các thông tin từ Supabase của bạn:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_anon_key
+   NEXT_PUBLIC_ADMIN_PASSWORD=admin123
+   ```
 
-## Deploy on Vercel
+4. **Chạy ở chế độ phát triển:**
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🗄 Cấu trúc Database (Supabase SQL)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Để ứng dụng chạy được, hãy chạy các script SQL sau trong Supabase SQL Editor:
+- `supabase.sql`: Tạo bảng `rooms` và cấu hình RLS.
+- `storage.sql`: Tạo bucket `rooms` để lưu trữ hình ảnh.
+
+---
+
+*Phát triển bởi quzkhanh.*
