@@ -61,7 +61,7 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
     { label: 'Trên 6 triệu', min: '6000000', max: '' },
   ];
 
-  const FilterContent = () => (
+  const renderFilterContent = () => (
     <div className="space-y-5">
       {/* Search */}
       <div>
@@ -187,7 +187,7 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
             </svg>
             Bộ lọc
           </h2>
-          <FilterContent />
+          {renderFilterContent()}
         </div>
       </aside>
 
@@ -234,7 +234,7 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
                 </button>
               </div>
 
-              <FilterContent />
+              {renderFilterContent()}
             </div>
           </div>
         </div>
