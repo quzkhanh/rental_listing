@@ -66,3 +66,21 @@ export async function getDistricts(): Promise<string[]> {
   const districts = [...new Set((data || []).map((r: { district: string }) => r.district))];
   return districts.filter(Boolean);
 }
+
+export async function getSimilarRooms(district: string, excludeId: string, limit: number = 3): Promise<Room[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('district', district)
+    .neq('id', excludeId)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error('Error fetching similar rooms:', error);
+    return [];
+  }
+
+  return (data as Room[]) || [];
+}

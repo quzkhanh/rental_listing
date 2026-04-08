@@ -31,11 +31,18 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
+  const adminSession = request.cookies.get('admin_session');
+
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
-    if (!user) {
+    if (!user && !adminSession) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
+  }
+
+  // Redirect away from login if already authenticated
+  if (request.nextUrl.pathname === '/admin/login' && (user || adminSession)) {
+    return NextResponse.redirect(new URL('/admin', request.url));
   }
 
   return response;

@@ -7,7 +7,8 @@ import { Room } from '@/lib/types';
 import { ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/constants';
 import { formatPrice, getZaloLink, getGoogleMapsEmbedUrl } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
-import { getRoomById } from '@/lib/queries';
+import { getRoomById, getSimilarRooms } from '@/lib/queries';
+import RoomCard from '@/components/RoomCard';
 
 export default function RoomDetailPage() {
   const params = useParams();
@@ -15,12 +16,23 @@ export default function RoomDetailPage() {
   const [room, setRoom] = useState<Room | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const [similarRooms, setSimilarRooms] = useState<Room[]>([]);
+  const [viewersCount, setViewersCount] = useState<number>(0);
+
+  useEffect(() => {
+    setViewersCount(Math.floor(Math.random() * 5) + 2);
+  }, []);
+
   useEffect(() => {
     async function fetchRoom() {
       setLoading(true);
       try {
         const data = await getRoomById(id);
         setRoom(data);
+        if (data && data.district) {
+          const similar = await getSimilarRooms(data.district, data.id);
+          setSimilarRooms(similar);
+        }
       } catch (error) {
         console.error('Error fetching room:', error);
       } finally {
@@ -173,19 +185,37 @@ export default function RoomDetailPage() {
                   {formatPrice(room.price)}
                 </div>
 
-                {/* Zalo CTA */}
-                <a
-                  href={zaloUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-base font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-[0.98] zalo-pulse"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.49 10.272v-.45h1.347v6.322h-.77a.58.58 0 01-.577-.494l-.048-.326a3.026 3.026 0 01-2.18.94 3.04 3.04 0 01-2.26-.96 3.57 3.57 0 01-.905-2.49c0-.96.31-1.78.92-2.45a3 3 0 012.25-.97c.84 0 1.57.3 2.18.87zm-2.02 4.72c.62 0 1.14-.22 1.56-.66.43-.44.64-.99.64-1.64s-.21-1.2-.64-1.64c-.42-.44-.95-.66-1.56-.66-.62 0-1.14.22-1.57.66-.42.44-.63.99-.63 1.64s.21 1.2.63 1.64c.43.44.95.66 1.57.66z" />
-                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM4 12c0-4.42 3.58-8 8-8s8 3.58 8 8-3.58 8-8 8-8-3.58-8-8z" />
+                <div className="space-y-3">
+                  <a
+                    href={`tel:${ZALO_PHONE}`}
+                    className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl bg-green-500 text-white text-base font-bold hover:bg-green-600 transition-all shadow-lg active:scale-[0.98]"
+                  >
+                    📞 Gọi điện trực tiếp
+                  </a>
+                  <div className="flex gap-3">
+                    <a
+                      href={zaloUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-base font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-[0.98] zalo-pulse"
+                    >
+                      💬 Nhắn Zalo
+                    </a>
+                    <a
+                      href={`sms:${ZALO_PHONE}?body=${encodeURIComponent(DEFAULT_ZALO_MESSAGE + ' - ' + room.title)}`}
+                      className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl bg-slate-100 text-slate-700 text-base font-bold hover:bg-slate-200 transition-all shadow-md active:scale-[0.98]"
+                    >
+                      ✉️ Gửi SMS
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-3 bg-red-50 rounded-xl border border-red-100 flex items-center justify-center gap-2 text-red-600 text-sm font-semibold animate-pulse">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
                   </svg>
-                  Nhắn Zalo
-                </a>
+                  Đang có {viewersCount} người cũng quan tâm phòng này!
+                </div>
 
                 <p className="text-center text-xs text-slate-400 mt-3">
                   &ldquo;{DEFAULT_ZALO_MESSAGE}&rdquo;
@@ -228,6 +258,20 @@ export default function RoomDetailPage() {
             </div>
           </div>
         </div>
+
+        {/* Similar Rooms */}
+        {similarRooms.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-slate-200">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">
+              Các phòng trọ tương tự khu vực {room.district}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {similarRooms.map((similarRoom) => (
+                <RoomCard key={similarRoom.id} room={similarRoom} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Mobile sticky CTA */}
@@ -239,18 +283,22 @@ export default function RoomDetailPage() {
               {formatPrice(room.price)}
             </div>
           </div>
-          <a
-            href={zaloUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 active:scale-[0.98] zalo-pulse shrink-0"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12.49 10.272v-.45h1.347v6.322h-.77a.58.58 0 01-.577-.494l-.048-.326a3.026 3.026 0 01-2.18.94 3.04 3.04 0 01-2.26-.96 3.57 3.57 0 01-.905-2.49c0-.96.31-1.78.92-2.45a3 3 0 012.25-.97c.84 0 1.57.3 2.18.87zm-2.02 4.72c.62 0 1.14-.22 1.56-.66.43-.44.64-.99.64-1.64s-.21-1.2-.64-1.64c-.42-.44-.95-.66-1.56-.66-.62 0-1.14.22-1.57.66-.42.44-.63.99-.63 1.64s.21 1.2.63 1.64c.43.44.95.66 1.57.66z" />
-              <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM4 12c0-4.42 3.58-8 8-8s8 3.58 8 8-3.58 8-8 8-8-3.58-8-8z" />
-            </svg>
-            Nhắn Zalo
-          </a>
+          <div className="flex gap-2">
+            <a
+              href={`tel:${ZALO_PHONE}`}
+              className="flex items-center justify-center w-12 py-3 rounded-xl bg-green-500 text-white hover:bg-green-600 transition-all shadow-lg active:scale-[0.98] shrink-0"
+            >
+              📞
+            </a>
+            <a
+              href={zaloUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 active:scale-[0.98] zalo-pulse shrink-0"
+            >
+              💬 Zalo
+            </a>
+          </div>
         </div>
       </div>
     </>
