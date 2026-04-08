@@ -25,6 +25,7 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
     lat: initialData?.lat?.toString() || '10.762622',
     lng: initialData?.lng?.toString() || '106.660172',
     description: initialData?.description || '',
+    utilities: initialData?.utilities || '',
   });
 
   // Images state
@@ -99,6 +100,7 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
         lng: parseFloat(formData.lng),
         images: allImages,
         description: formData.description,
+        utilities: formData.utilities,
       });
       
     } catch (error) {
@@ -141,6 +143,11 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-slate-700 mb-2">Địa chỉ chi tiết <span className="text-red-500">*</span></label>
               <input required name="address" value={formData.address} onChange={handleChange} placeholder="Vd: 123 Lê Lợi, Phường Bến Thành" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all" />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Tiện ích nổi bật cận kề</label>
+              <input name="utilities" value={formData.utilities} onChange={handleChange} placeholder="Vd: Gần Đại học Bách Khoa, Lotte Mart..." className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all" />
             </div>
           </div>
         </div>

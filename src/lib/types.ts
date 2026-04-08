@@ -9,6 +9,7 @@ export interface Room {
   lng: number;
   images: string[];
   description: string;
+  utilities?: string;
   created_at: string;
 }
 
