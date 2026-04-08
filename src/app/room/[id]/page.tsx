@@ -110,7 +110,7 @@ export default function RoomDetailPage() {
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 leading-tight mb-3">
                 {room.title}
               </h1>
-              <div className="text-2xl sm:text-3xl font-extrabold text-orange-600">
+              <div className="text-2xl sm:text-3xl font-extrabold text-orange-600 break-all" title={formatPrice(room.price)}>
                 {formatPrice(room.price)}
               </div>
             </div>
@@ -180,7 +180,7 @@ export default function RoomDetailPage() {
               {/* Price card */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                 <div className="text-sm text-slate-500 mb-1">Giá thuê</div>
-                <div className="text-3xl font-extrabold text-orange-600 mb-6">
+                <div className="text-2xl font-extrabold text-orange-600 mb-6 break-all leading-tight" title={formatPrice(room.price)}>
                   {formatPrice(room.price)}
                 </div>
 
@@ -211,9 +211,9 @@ export default function RoomDetailPage() {
                     <span className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
                       💰
                     </span>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <div className="text-slate-500">Giá thuê</div>
-                      <div className="font-medium text-slate-800">{formatPrice(room.price)}</div>
+                      <div className="font-medium text-slate-800 break-all">{formatPrice(room.price)}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 text-sm">

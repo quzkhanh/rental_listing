@@ -221,5 +221,5 @@ export const MOCK_DISTRICTS = [
 ];
 
 // Default Zalo phone number - replace with your own
-export const ZALO_PHONE = '0909123456';
+export const ZALO_PHONE = '0972731098';
 export const DEFAULT_ZALO_MESSAGE = 'Em quan tâm phòng này, còn không ạ?';

@@ -7,7 +7,6 @@ import AdminLayout from '@/components/AdminLayout';
 import RoomForm from '@/components/RoomForm';
 import { updateRoom } from '@/lib/mutations';
 import { Room } from '@/lib/types';
-import { MOCK_ROOMS } from '@/lib/mockData';
 
 export default function EditRoomPage() {
   const router = useRouter();
@@ -19,20 +18,24 @@ export default function EditRoomPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Determine the room data to edit
     const fetchRoom = async () => {
-      // In real app, call getRoomById(id)
-      const stored = localStorage.getItem('mock_rooms');
-      const rooms: Room[] = stored ? JSON.parse(stored) : MOCK_ROOMS;
-      const found = rooms.find(r => r.id === id);
-      
-      if (found) {
-        setRoom(found);
-      } else {
-        alert('Không tìm thấy phòng!');
+      try {
+        const { getRoomById } = await import('@/lib/queries');
+        const data = await getRoomById(id);
+        
+        if (data) {
+          setRoom(data);
+        } else {
+          alert('Không tìm thấy phòng!');
+          router.push('/admin');
+        }
+      } catch (error) {
+        console.error('Error fetching room:', error);
+        alert('Lỗi khi tải dữ liệu phòng!');
         router.push('/admin');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     
     if (id) fetchRoom();

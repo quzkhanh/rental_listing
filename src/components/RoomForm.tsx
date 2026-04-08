@@ -21,7 +21,7 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
     price: initialData?.price?.toString() || '',
     address: initialData?.address || '',
     district: initialData?.district || '',
-    city: initialData?.city || 'TP. Hồ Chí Minh',
+    city: initialData?.city || '',
     lat: initialData?.lat?.toString() || '10.762622',
     lng: initialData?.lng?.toString() || '106.660172',
     description: initialData?.description || '',

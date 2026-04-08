@@ -90,7 +90,7 @@ export default function HomePage() {
             <span className="block text-blue-200">nhanh chóng & dễ dàng</span>
           </h1>
           <p className="text-lg text-blue-100/80 max-w-2xl mx-auto mb-8">
-            Hàng trăm phòng trọ, căn hộ mini tại TP. Hồ Chí Minh.
+            Hàng trăm phòng trọ, căn hộ mini giá tốt.
             Tìm kiếm theo giá, khu vực — liên hệ ngay qua Zalo.
           </p>
 

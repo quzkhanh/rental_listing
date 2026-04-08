@@ -14,12 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PhòngTrọ - Tìm phòng trọ nhanh chóng tại TP.HCM",
-  description: "Tìm phòng trọ, căn hộ mini, ký túc xá tại TP. Hồ Chí Minh. Dễ dàng tìm kiếm, lọc theo giá và khu vực. Liên hệ nhanh qua Zalo.",
-  keywords: "phòng trọ, thuê phòng, TP.HCM, Hồ Chí Minh, sinh viên, giá rẻ, căn hộ mini",
+  title: "PhòngTrọ - Tìm phòng trọ nhanh chóng",
+  description: "Tìm phòng trọ, căn hộ mini, ký túc xá giá tốt. Tìm kiếm theo giá, khu vực — liên hệ nhanh qua Zalo.",
+  keywords: "phòng trọ, thuê phòng, sinh viên, giá rẻ, căn hộ mini, Hà Nội",
   openGraph: {
     title: "PhòngTrọ - Tìm phòng trọ nhanh chóng",
-    description: "Tìm phòng trọ tại TP.HCM với bộ lọc thông minh",
+    description: "Tìm phòng trọ giá tốt với bộ lọc thông minh. Liên hệ nhanh qua Zalo.",
     type: "website",
   },
 };
@@ -51,7 +51,7 @@ export default function RootLayout({
                 <span className="text-sm font-semibold text-slate-700">PhòngTrọ</span>
               </div>
               <p className="text-sm text-slate-500">
-                © 2026 PhòngTrọ. Tìm phòng trọ nhanh chóng tại TP.HCM
+                © 2026 PhòngTrọ. Tìm phòng trọ nhanh chóng
               </p>
             </div>
           </div>
