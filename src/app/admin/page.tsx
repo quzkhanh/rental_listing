@@ -5,10 +5,6 @@ import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import { Room } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
-// We'll import a helper to fetch/delete rooms.
-// Using mock array or localStorage for now in dev, but let's assume we have a lib functions.
-import { MOCK_ROOMS } from '@/lib/mockData';
-
 import { getRooms } from '@/lib/queries';
 import { deleteRoom } from '@/lib/mutations';
 

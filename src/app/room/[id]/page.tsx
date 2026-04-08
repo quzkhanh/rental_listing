@@ -4,12 +4,10 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Room } from '@/lib/types';
-import { MOCK_ROOMS, ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/mockData';
+import { ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/constants';
 import { formatPrice, getZaloLink, getGoogleMapsEmbedUrl } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
-
-// Set to true to use Supabase, false for mock data
-const USE_SUPABASE = true;
+import { getRoomById } from '@/lib/queries';
 
 export default function RoomDetailPage() {
   const params = useParams();
@@ -21,17 +19,8 @@ export default function RoomDetailPage() {
     async function fetchRoom() {
       setLoading(true);
       try {
-        if (USE_SUPABASE) {
-          const { getRoomById } = await import('@/lib/queries');
-          const data = await getRoomById(id);
-          setRoom(data);
-        } else {
-          await new Promise((res) => setTimeout(res, 300));
-          const stored = localStorage.getItem('mock_rooms');
-          const rooms: Room[] = stored ? JSON.parse(stored) : MOCK_ROOMS;
-          const found = rooms.find((r) => r.id === id);
-          setRoom(found || null);
-        }
+        const data = await getRoomById(id);
+        setRoom(data);
       } catch (error) {
         console.error('Error fetching room:', error);
       } finally {

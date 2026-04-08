@@ -2,64 +2,31 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Room, RoomFilters } from '@/lib/types';
-import { MOCK_ROOMS, MOCK_DISTRICTS } from '@/lib/mockData';
 import RoomCard from '@/components/RoomCard';
 import FilterBar from '@/components/FilterBar';
-
-// Set to true to use Supabase, false for mock data
-const USE_SUPABASE = true;
+import { HO_CHI_MINH_DISTRICTS } from '@/lib/constants';
+import { getRooms, getDistricts } from '@/lib/queries';
 
 export default function HomePage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<RoomFilters>({});
-  const [districts, setDistricts] = useState<string[]>(MOCK_DISTRICTS);
+  const [districts, setDistricts] = useState<string[]>(HO_CHI_MINH_DISTRICTS);
 
   const fetchRooms = useCallback(async (currentFilters: RoomFilters) => {
     setLoading(true);
     try {
-      if (USE_SUPABASE) {
-        // Dynamic import to avoid errors when Supabase is not configured
-        const { getRooms, getDistricts } = await import('@/lib/queries');
-        const [roomsData, districtsData] = await Promise.all([
-          getRooms(currentFilters),
-          getDistricts(),
-        ]);
-        setRooms(roomsData);
+      const [roomsData, districtsData] = await Promise.all([
+        getRooms(currentFilters),
+        getDistricts(),
+      ]);
+      setRooms(roomsData || []);
+      if (districtsData && districtsData.length > 0) {
         setDistricts(districtsData);
-      } else {
-        // Use mock data with client-side filtering
-        const stored = localStorage.getItem('mock_rooms');
-        let filtered = stored ? JSON.parse(stored) : [...MOCK_ROOMS];
-
-        if (currentFilters.keyword) {
-          const kw = currentFilters.keyword.toLowerCase();
-          filtered = filtered.filter(
-            (r: Room) =>
-              r.title.toLowerCase().includes(kw) ||
-              r.address.toLowerCase().includes(kw)
-          );
-        }
-
-        if (currentFilters.minPrice) {
-          filtered = filtered.filter((r: Room) => r.price >= currentFilters.minPrice!);
-        }
-
-        if (currentFilters.maxPrice) {
-          filtered = filtered.filter((r: Room) => r.price <= currentFilters.maxPrice!);
-        }
-
-        if (currentFilters.district) {
-          filtered = filtered.filter((r: Room) => r.district === currentFilters.district);
-        }
-
-        // Simulate network delay
-        await new Promise((res) => setTimeout(res, 300));
-        setRooms(filtered);
       }
     } catch (error) {
       console.error('Error fetching rooms:', error);
-      setRooms(MOCK_ROOMS);
+      setRooms([]);
     } finally {
       setLoading(false);
     }
@@ -97,11 +64,11 @@ export default function HomePage() {
           {/* Stats */}
           <div className="flex justify-center gap-8 sm:gap-16">
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white">{MOCK_ROOMS.length}+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white">{rooms.length}</div>
               <div className="text-sm text-blue-200/70">Phòng trọ</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white">{MOCK_DISTRICTS.length}+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white">{districts.length}</div>
               <div className="text-sm text-blue-200/70">Khu vực</div>
             </div>
             <div className="text-center">

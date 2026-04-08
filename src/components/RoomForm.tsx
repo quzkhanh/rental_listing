@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Room } from '@/lib/types';
-import { MOCK_DISTRICTS } from '@/lib/mockData';
+import { HO_CHI_MINH_DISTRICTS } from '@/lib/constants';
 import { createClient } from '@/utils/supabase/client';
 
 interface RoomFormProps {
@@ -119,7 +119,7 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
               <label className="block text-sm font-semibold text-slate-700 mb-2">Quận / Huyện <span className="text-red-500">*</span></label>
               <select required name="district" value={formData.district} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all appearance-none">
                 <option value="" disabled>Chọn quận huyện</option>
-                {MOCK_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                {HO_CHI_MINH_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
 
