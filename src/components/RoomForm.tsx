@@ -36,6 +36,16 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/\D/g, '');
+    setFormData({ ...formData, price: rawValue });
+  };
+
+  const formatPriceForInput = (value: string) => {
+    if (!value) return '';
+    return new Intl.NumberFormat('vi-VN').format(Number(value));
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFiles((prev) => [...prev, ...Array.from(e.target.files!)]);
@@ -77,9 +87,11 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
       
       const allImages = [...existingImages, ...uploadedUrls];
 
+      const parsedPrice = parseInt(formData.price) || 0;
+
       onSubmit({
         title: formData.title,
-        price: parseInt(formData.price),
+        price: parsedPrice,
         address: formData.address,
         district: formData.district,
         city: formData.city,
@@ -112,7 +124,10 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
             
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">Giá thuê (VNĐ/tháng) <span className="text-red-500">*</span></label>
-              <input required type="number" name="price" value={formData.price} onChange={handleChange} placeholder="Vd: 3500000" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all" />
+              <div className="relative">
+                <input required type="text" name="price" value={formatPriceForInput(formData.price)} onChange={handlePriceChange} placeholder="Vd: 3.500.000" className="w-full px-4 py-3 pr-8 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all" />
+                {formData.price && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400 pointer-events-none">đ</span>}
+              </div>
             </div>
 
             <div>
