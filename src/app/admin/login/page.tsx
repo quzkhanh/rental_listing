@@ -11,7 +11,7 @@ export default function AdminLogin() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Default admin password for MVP if not set in .env
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'Dev13th10.';
     
     if (password === adminPassword) {
       localStorage.setItem('admin_auth', 'true');
