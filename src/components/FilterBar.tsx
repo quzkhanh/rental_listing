@@ -44,6 +44,16 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
 
   const hasActiveFilters = keyword || minPrice || maxPrice || district;
 
+  const handlePriceChange = (value: string, setter: (val: string) => void) => {
+    const rawValue = value.replace(/\D/g, '');
+    setter(rawValue);
+  };
+
+  const formatPriceForInput = (value: string) => {
+    if (!value) return '';
+    return new Intl.NumberFormat('vi-VN').format(Number(value));
+  };
+
   const pricePresets = [
     { label: 'Dưới 2 triệu', min: '', max: '2000000' },
     { label: '2-4 triệu', min: '2000000', max: '4000000' },
@@ -97,22 +107,28 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
           ))}
         </div>
         {/* Custom inputs */}
-        <div className="flex gap-2 items-center">
-          <input
-            type="number"
-            placeholder="Từ"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            className="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
-          />
-          <span className="text-slate-400 text-sm">—</span>
-          <input
-            type="number"
-            placeholder="Đến"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            className="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
-          />
+        <div className="flex gap-3 items-center">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Từ"
+              value={formatPriceForInput(minPrice)}
+              onChange={(e) => handlePriceChange(e.target.value, setMinPrice)}
+              className="w-full px-3 py-2.5 pr-6 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+            />
+            {minPrice && <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 pointer-events-none">đ</span>}
+          </div>
+          <span className="text-slate-300 text-sm font-bold">—</span>
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Đến"
+              value={formatPriceForInput(maxPrice)}
+              onChange={(e) => handlePriceChange(e.target.value, setMaxPrice)}
+              className="w-full px-3 py-2.5 pr-6 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+            />
+            {maxPrice && <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 pointer-events-none">đ</span>}
+          </div>
         </div>
       </div>
 
@@ -163,7 +179,7 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-80 shrink-0">
+      <aside className="hidden lg:block w-80 xl:w-[340px] shrink-0 -ml-2 xl:-ml-6">
         <div className="sticky top-24 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
           <h2 className="text-lg font-bold text-slate-800 mb-5 flex items-center gap-2">
             <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
