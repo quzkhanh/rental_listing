@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Room } from '@/lib/types';
-import { ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/constants';
+import { CALL_PHONE, ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/constants';
 import { formatPrice, getZaloLink, getGoogleMapsEmbedUrl } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
 import { getRoomById, getSimilarRooms } from '@/lib/queries';
@@ -195,7 +195,7 @@ export default function RoomDetailPage() {
 
                 <div className="space-y-3">
                   <a
-                    href={`tel:${ZALO_PHONE}`}
+                    href={`tel:${CALL_PHONE}`}
                     className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl bg-green-500 text-white text-base font-bold hover:bg-green-600 transition-all shadow-lg active:scale-[0.98]"
                   >
                     📞 Gọi điện trực tiếp
@@ -293,7 +293,7 @@ export default function RoomDetailPage() {
           </div>
           <div className="flex gap-2">
             <a
-              href={`tel:${ZALO_PHONE}`}
+              href={`tel:${CALL_PHONE}`}
               className="flex items-center justify-center w-12 py-3 rounded-xl bg-green-500 text-white hover:bg-green-600 transition-all shadow-lg active:scale-[0.98] shrink-0"
             >
               📞

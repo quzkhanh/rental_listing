@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Room } from '@/lib/types';
 import { formatPriceShort, truncateText } from '@/lib/utils';
 import { useState, useEffect } from 'react';
-import { ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/constants';
+import { CALL_PHONE, ZALO_PHONE, DEFAULT_ZALO_MESSAGE } from '@/lib/constants';
 import { getZaloLink } from '@/lib/utils';
 
 interface RoomCardProps {
@@ -121,7 +121,7 @@ export default function RoomCard({ room }: RoomCardProps) {
 
         {/* CTA Buttons */}
         <div className="mt-4 flex gap-2">
-          <a href={`tel:${ZALO_PHONE}`} className="flex-1 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold text-center hover:bg-green-100 transition-colors shadow-sm">
+          <a href={`tel:${CALL_PHONE}`} className="flex-1 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold text-center hover:bg-green-100 transition-colors shadow-sm">
             📞 Gọi ngay
           </a>
           <a href={getZaloLink(ZALO_PHONE, `${DEFAULT_ZALO_MESSAGE} - ${room.title}`)} target="_blank" rel="noopener noreferrer" className="flex-1 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold text-center hover:bg-blue-100 transition-colors shadow-sm">

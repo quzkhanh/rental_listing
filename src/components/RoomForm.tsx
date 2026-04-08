@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Room } from '@/lib/types';
-import { HO_CHI_MINH_DISTRICTS } from '@/lib/constants';
+import { HA_NOI_DISTRICTS, HO_CHI_MINH_DISTRICTS } from '@/lib/constants';
 import { createClient } from '@/utils/supabase/client';
 
 interface RoomFormProps {
@@ -22,8 +22,8 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
     address: initialData?.address || '',
     district: initialData?.district || '',
     city: initialData?.city || '',
-    lat: initialData?.lat?.toString() || '10.762622',
-    lng: initialData?.lng?.toString() || '106.660172',
+    lat: initialData?.lat?.toString() || '21.028511',
+    lng: initialData?.lng?.toString() || '105.804817',
     description: initialData?.description || '',
     utilities: initialData?.utilities || '',
   });
@@ -34,7 +34,19 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
   const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'district') {
+      // Auto-set city based on selected district
+      let city = '';
+      if (HA_NOI_DISTRICTS.includes(value)) {
+        city = 'Hà Nội';
+      } else if (HO_CHI_MINH_DISTRICTS.includes(value)) {
+        city = 'TP. Hồ Chí Minh';
+      }
+      setFormData({ ...formData, district: value, city });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +148,12 @@ export default function RoomForm({ initialData, onSubmit, isSubmitting }: RoomFo
               <label className="block text-sm font-semibold text-slate-700 mb-2">Quận / Huyện <span className="text-red-500">*</span></label>
               <select required name="district" value={formData.district} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all appearance-none">
                 <option value="" disabled>Chọn quận huyện</option>
-                {HO_CHI_MINH_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                <optgroup label="🏙️ Hà Nội">
+                  {HA_NOI_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                </optgroup>
+                <optgroup label="🏙️ TP. Hồ Chí Minh">
+                  {HO_CHI_MINH_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                </optgroup>
               </select>
             </div>
 

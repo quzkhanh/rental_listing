@@ -4,14 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { Room, RoomFilters } from '@/lib/types';
 import RoomCard from '@/components/RoomCard';
 import FilterBar from '@/components/FilterBar';
-import { HO_CHI_MINH_DISTRICTS } from '@/lib/constants';
+import { ALL_DISTRICTS } from '@/lib/constants';
 import { getRooms, getDistricts } from '@/lib/queries';
 
 export default function HomePage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<RoomFilters>({});
-  const [districts, setDistricts] = useState<string[]>(HO_CHI_MINH_DISTRICTS);
+  const [districts, setDistricts] = useState<string[]>(ALL_DISTRICTS);
 
   const fetchRooms = useCallback(async (currentFilters: RoomFilters) => {
     setLoading(true);

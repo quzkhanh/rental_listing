@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { RoomFilters } from '@/lib/types';
+import { HA_NOI_DISTRICTS, HO_CHI_MINH_DISTRICTS } from '@/lib/constants';
 
 interface FilterBarProps {
   districts: string[];
@@ -60,6 +61,11 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
     { label: '4-6 triệu', min: '4000000', max: '6000000' },
     { label: 'Trên 6 triệu', min: '6000000', max: '' },
   ];
+
+  // Split districts into Hanoi and HCM groups
+  const hanoiDistricts = districts.filter(d => HA_NOI_DISTRICTS.includes(d));
+  const hcmDistricts = districts.filter(d => HO_CHI_MINH_DISTRICTS.includes(d));
+  const otherDistricts = districts.filter(d => !HA_NOI_DISTRICTS.includes(d) && !HO_CHI_MINH_DISTRICTS.includes(d));
 
   const renderFilterContent = () => (
     <div className="space-y-5">
@@ -144,9 +150,27 @@ export default function FilterBar({ districts, onFilter, initialFilters }: Filte
           style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundPosition: 'right 0.75rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25rem 1.25rem' }}
         >
           <option value="">Tất cả quận</option>
-          {districts.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
+          {hanoiDistricts.length > 0 && (
+            <optgroup label="🏙️ Hà Nội">
+              {hanoiDistricts.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </optgroup>
+          )}
+          {hcmDistricts.length > 0 && (
+            <optgroup label="🏙️ TP. Hồ Chí Minh">
+              {hcmDistricts.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </optgroup>
+          )}
+          {otherDistricts.length > 0 && (
+            <optgroup label="📍 Khác">
+              {otherDistricts.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </optgroup>
+          )}
         </select>
       </div>
 
