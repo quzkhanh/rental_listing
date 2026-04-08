@@ -15,6 +15,7 @@ export default function AdminLogin() {
     
     if (password === adminPassword) {
       localStorage.setItem('admin_auth', 'true');
+      document.cookie = 'admin_session=true; path=/; max-age=86400';
       router.push('/admin');
     } else {
       setError(true);
