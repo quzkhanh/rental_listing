@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Room } from '@/lib/types';
 import { formatPriceShort, truncateText } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -12,6 +12,7 @@ interface RoomCardProps {
 }
 
 export default function RoomCard({ room }: RoomCardProps) {
+  const router = useRouter();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [isHot, setIsHot] = useState(false);
@@ -32,7 +33,7 @@ export default function RoomCard({ room }: RoomCardProps) {
   };
 
   return (
-    <Link href={`/room/${room.id}`} className="block">
+    <div onClick={() => router.push(`/room/${room.id}`)} className="block cursor-pointer">
       <div className="room-card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100">
         {/* Image */}
         <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
@@ -129,6 +130,6 @@ export default function RoomCard({ room }: RoomCardProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
