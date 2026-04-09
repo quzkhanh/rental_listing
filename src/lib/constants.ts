@@ -34,6 +34,6 @@ export const HO_CHI_MINH_DISTRICTS = [
 
 export const ALL_DISTRICTS = [...HA_NOI_DISTRICTS, ...HO_CHI_MINH_DISTRICTS];
 
-export const CALL_PHONE = '0866206193';
+export const CALL_PHONE = '0924695330';
 export const ZALO_PHONE = '0972731098';
 export const DEFAULT_ZALO_MESSAGE = 'Em quan tâm phòng này, còn không ạ?';

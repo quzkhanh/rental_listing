@@ -24,12 +24,12 @@ export default function Header() {
             <Link href="/" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
               Trang chủ
             </Link>
-            <a href="#" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+            <Link href="/about" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
               Về chúng tôi
-            </a>
-            <a href="#" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+            </Link>
+            <Link href="/contact" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
               Liên hệ
-            </a>
+            </Link>
           </nav>
 
           {/* CTA */}
